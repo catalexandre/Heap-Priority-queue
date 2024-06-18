@@ -50,7 +50,7 @@ public class SmarterPQ<V, K>
     }
 
     private void upHeap(int position) {
-        while(position != 0 && comparator.compare(a[parent(position)].getKey(), a[position].getKey()) * state > 0) {
+        while(position != 0 && comparator.compare(a[parent(position)].getKey(), a[position].getKey()) * state < 0) {
             swap(position, parent(position));
             position = parent(position);
         }
@@ -61,12 +61,16 @@ public class SmarterPQ<V, K>
 
             int downHeapPosition = 0;
 
-            if(comparator.compare(a[position].getKey(), a[leftChild(position)].getKey()) * state > 0) {
+            if(comparator.compare(a[position].getKey(), a[leftChild(position)].getKey()) * state < 0) {
                 downHeapPosition = leftChild(position);
             }
             
-            else if(rightChild(position) < a.length && rightChild(position) < lastEntry && comparator.compare(a[position].getKey(), a[rightChild(position)].getKey()) * state > 0) {
-                downHeapPosition = rightChild(position);
+            if(rightChild(position) < a.length && rightChild(position) < lastEntry && comparator.compare(a[position].getKey(), a[rightChild(position)].getKey()) * state < 0) {
+                if(downHeapPosition == 0) downHeapPosition = rightChild(position);
+
+                else if(comparator.compare(a[downHeapPosition].getKey(), a[rightChild(position)].getKey()) * state < 0) {
+                    downHeapPosition = rightChild(position);
+                }
             }
 
             if(downHeapPosition != 0) {
@@ -101,10 +105,6 @@ public class SmarterPQ<V, K>
         return returnEntry;
     }
 
-    public byte state() {
-        return state;
-    }
-
     public void printArray() {
         for(int i = 0; i < a.length; i++) {
 
@@ -112,4 +112,28 @@ public class SmarterPQ<V, K>
             System.out.print("pos " + i + ": " + a[i].getValue() + " : " + a[i].getKey() + " | ");
         }
     }
+
+    public void toggle() {
+        state *= -1;
+
+        for (int i = (lastEntry / 2) - 1; i >= 0; i--) {
+            downHeap(i);
+        }
+    }
+
+    public Entry<V, K> top() {
+        return a[0];
+    }
+
+    public boolean isEmpty() {
+        return (lastEntry == 0) ? true : false;
+    }
+
+    public int size() {
+        return lastEntry;
+    }
+
+    public String state() {
+        return (state > 0) ? "max" : "min";
+        }
 }
