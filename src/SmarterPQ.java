@@ -15,28 +15,28 @@ public class SmarterPQ<V, K>
     //variable to hold the priority queues comparator
     private Comparator comparator;
 
-    //constructor with comparator and size initialized to one
+    //constructor with comparator
     public SmarterPQ(Comparator comparator) {
         a = (Entry<V, K>[])(new Entry[1]);
         this.comparator = comparator;
         this.state = 1;
     }
 
-    //constructor with comparator and size initialized to capacity
+    //constructor with comparator and size
     public SmarterPQ(Comparator comparator, int capacity) {
         a = (Entry<V, K>[])(new Entry[capacity]);
         this.comparator = comparator;
         this.state = 1;
     }
 
-    //constructor with comparator, state, and size initialized to one
+    //constructor with comparator, state
     public SmarterPQ(Comparator comparator, byte state) {
         a = (Entry<V, K>[])(new Entry[1]);
         this.comparator = comparator;
         this.state = state;
     }
 
-    //constructor with comparator, state, and size initialized to capacity
+    //constructor with comparator, state, and size
     public SmarterPQ(Comparator comparator, int capacity, byte state) {
         a = (Entry<V, K>[])(new Entry[capacity]);
         this.comparator = comparator;
