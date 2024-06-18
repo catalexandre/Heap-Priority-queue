@@ -3,7 +3,7 @@ import java.util.Comparator;
 public class SmarterPQ<V, K>
 {
     private Entry<V, K>[] a;
-    private int position = 0;
+    private int lastEntry = 0;
     private byte state = 1;
     private Comparator comparator;
 
@@ -18,7 +18,7 @@ public class SmarterPQ<V, K>
     }
 
     public int getSize() {
-        return position;
+        return lastEntry;
     }
 
     private void expand() {
@@ -35,25 +35,70 @@ public class SmarterPQ<V, K>
         return (position % 2 == 0) ? (position - 2) / 2 : (position - 1) / 2;
     }
 
+    private int leftChild(int position) {
+        return position * 2 + 1;
+    }
+
+    private int rightChild(int position) {
+        return position * 2 + 2;
+    }
+
     private void swap(int i, int j) {
         Entry<V, K> temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
 
+    private void upHeap(int position) {
+        while(position != 0 && comparator.compare(a[parent(position)].getKey(), a[position].getKey()) * state > 0) {
+            swap(position, parent(position));
+            position = parent(position);
+        }
+    }
+
+    private void downHeap(int position) {
+        while(leftChild(position) < a.length && leftChild(position) < lastEntry) {
+
+            int downHeapPosition = 0;
+
+            if(comparator.compare(a[position].getKey(), a[leftChild(position)].getKey()) * state > 0) {
+                downHeapPosition = leftChild(position);
+            }
+            
+            else if(rightChild(position) < a.length && rightChild(position) < lastEntry && comparator.compare(a[position].getKey(), a[rightChild(position)].getKey()) * state > 0) {
+                downHeapPosition = rightChild(position);
+            }
+
+            if(downHeapPosition != 0) {
+                swap(position, downHeapPosition);
+                position = downHeapPosition;
+            }
+
+            else break;
+        }
+    }
+
     public void insert(V value, K key) {
-        if(position == a.length) expand();
+        if(lastEntry == a.length) expand();
 
-        a[position] = new Entry<V, K>(value, key);
+        a[lastEntry] = new Entry<V, K>(value, key);
 
-        int upHeapPosition = position;
+        upHeap(lastEntry);
 
-        while(upHeapPosition != 0 && comparator.compare(a[parent(upHeapPosition)].getKey(), a[upHeapPosition].getKey()) * state >= 0) {
-            swap(upHeapPosition, parent(upHeapPosition));
-            upHeapPosition = parent(upHeapPosition);
+        lastEntry++;
+    }
+
+    public Entry<V, K> removeTop() {
+        Entry<V, K> returnEntry = a[0];
+        a[0] = a[lastEntry - 1];
+        a[lastEntry - 1] = null;
+        lastEntry--;
+
+        if(lastEntry > 0) {
+            downHeap(0);
         }
 
-        position++;
+        return returnEntry;
     }
 
     public byte state() {
