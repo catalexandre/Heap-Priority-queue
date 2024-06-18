@@ -10,7 +10,7 @@ public class SmarterPQ<V, K>
 
     //state 1 represents max, -1 min
     //the logic is that multiplying the result of the comparator by state inverse the input or not depending on the need
-    private byte state = 1;
+    private byte state;
 
     //variable to hold the priority queues comparator
     private Comparator comparator;
@@ -19,12 +19,28 @@ public class SmarterPQ<V, K>
     public SmarterPQ(Comparator comparator) {
         a = (Entry<V, K>[])(new Entry[1]);
         this.comparator = comparator;
+        this.state = 1;
     }
 
     //constructor with comparator and size initialized to capacity
     public SmarterPQ(Comparator comparator, int capacity) {
         a = (Entry<V, K>[])(new Entry[capacity]);
         this.comparator = comparator;
+        this.state = 1;
+    }
+
+    //constructor with comparator, state, and size initialized to one
+    public SmarterPQ(Comparator comparator, byte state) {
+        a = (Entry<V, K>[])(new Entry[1]);
+        this.comparator = comparator;
+        this.state = state;
+    }
+
+    //constructor with comparator, state, and size initialized to capacity
+    public SmarterPQ(Comparator comparator, int capacity, byte state) {
+        a = (Entry<V, K>[])(new Entry[capacity]);
+        this.comparator = comparator;
+        this.state = state;
     }
 
     //returns size of queue
