@@ -1,0 +1,36 @@
+Algorithm Entry<V, K>
+
+    V value
+    K key
+
+    Function Entry(value, key)
+        Input: value (V), key (K)
+
+        value <-- value
+        key <-- key
+
+    Function Entry(entry)
+        Input: entry (Entry<V, K>)
+
+        key <-- entry.getKey()
+        value <-- entry.getValue()
+
+    Function getValue()
+        Output: V
+
+        return value
+
+    Function getKey()
+        Output: K
+
+        return key
+
+    Function setKey(key)
+        Input: key (K)
+
+        key <-- key
+
+    Function setValue(value)
+        Input: value (V)
+
+        value <-- value

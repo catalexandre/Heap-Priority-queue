@@ -1,0 +1,7 @@
+Algorithm NumericalValue
+
+    Function compare(x, y)
+        Input: x (Integer), y (Integer)
+        Output: Integer
+
+        return x.intValue() - y.intValue()
